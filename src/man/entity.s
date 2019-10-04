@@ -10,9 +10,16 @@
 .module entity_manager
 
 
-DefineComponentArrayStructure _entity, max_entities, DefineCmp_Entity_default ;; ....
+DefineComponentArrayStructure _entity, max_entities, DefineCmp_Entity_default 		; _entity_array  	 /  _entity_num
+DefineComponentArrayStructure _obstacle, max_obstacles, DefineCmp_Obstacle_default 		; _obstacle_array  /  _obstacle_num
+DefineComponentArrayStructure _enemigo, max_enemigos, DefineCmp_Enemigo_default		; _enemigo_array   /  _enemigo_num
+DefineComponentArrayStructure _bala, max_balas, DefineCmp_Bala_default 			; _bala_array  	 /  _bala_num
 
-DefineComponentArrayStructure _obstacle, max_obstacles, DefineCmp_Obstacle_default ;; ....
+
+
+
+
+
 
 
 
