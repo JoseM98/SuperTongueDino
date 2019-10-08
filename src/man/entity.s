@@ -158,7 +158,70 @@ man_obstacle_create::
 
 
 
+; -----------------------------------------------------
+; ENEMIGOS
+; -----------------------------------------------------
+
+;; //////////////////
+;; getArray
+;; Input: -
+;; Destroy: A, IX
+man_enemigo_getArray::
+	ld  ix, #_enemigo_array
+	ld	a, (_enemigo_num)
+	ret
 
 
 
+;; //////////////////
+;; init Entity
+;; Input: -
+;; Destroy: AF, HL
+man_enemigo_init::
+	xor a   				;; pone a con el valor de 0, solo ocupa una operacion
+	ld 	(_enemigo_num), a
+
+	ld	hl, #_enemigo_array
+	ld	(_enemigo_pend), hl
+
+	ret
+
+
+
+;; //////////////////
+;; NEW Entity
+;; Input: -
+;; Destroy: F, BC, DE, HL
+;; Return: BC -> tamaño de la entidad,   DE -> apunta al elemento creado
+man_enemigo_new::
+	;; Incrementar numero de entidades
+	ld	hl, #_enemigo_num
+	inc	(hl)
+
+	;; Mueve el puntero del array al siguiente elemento vacio
+	ld	hl, (_enemigo_pend)
+	ld	d, h
+	ld	e, l
+	ld	bc, #sizeof_enemigo
+	add hl, bc
+	ld	(_enemigo_pend),hl
+
+	ret 
+
+;; //////////////////
+;; CREATE Entity
+;; Input: HL -> puntero para inicializar valores de la entidad
+;; Destroy: F, BC, DE, HL
+;; Return: IX -> puntero al componente creado
+man_enemigo_create::
+	push hl
+	call man_enemigo_new
+
+	ld__ixh_d  ;; carga d en el registro alto de ix
+	ld__ixl_e
+
+	pop hl
+	ldir
+
+	ret
 	

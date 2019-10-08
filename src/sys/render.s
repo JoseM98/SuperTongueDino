@@ -140,6 +140,77 @@ _update_loop_obstacles:
 		jr	_update_loop_obstacles
 
 
+
+
+; -----------------------------------------------------
+; ENEMIGOS
+; -----------------------------------------------------
+sys_eren_update_enemigo::
+	call sys_eren_render_enemigos
+
+	ret
+;; //////////////////
+;; Sys Render Update
+;; Input: IX -> Puntero al array de entidades,   A -> numero de elementos en el array
+;; Destroy: AF, BC, DE, HL, IX
+;; Stack Use: 2 bytes
+sys_eren_render_enemigos::
+	ld	(_enemigo_counter), a
+
+_update_loop_enemigo:
+	;; Erase Previous Instance
+
+	cpctm_setBorder_asm HW_RED
+
+
+	ld 	e, enemigo_lastVP_l(ix)
+	ld	d, enemigo_lastVP_h(ix)
+	xor 	a
+	ld	c, enemigo_w(ix)
+	ld 	b, enemigo_h(ix)
+	push	bc
+	call	cpct_drawSolidBox_asm
+
+	;; Calcular puntero a memoria de video
+	ld	de, #screen_start
+	ld	c, enemigo_x(ix)
+	ld	b, enemigo_y(ix)
+	call	cpct_getScreenPtr_asm
+
+	;; Almacena el puntero de memoria de video al final
+	ld	enemigo_lastVP_l(ix), l
+	ld	enemigo_lastVP_h(ix), h
+
+	;; Drae Entity Sprite
+	ex	de, hl
+	ld	l, enemigo_pspr_l(ix)
+	ld	h, enemigo_pspr_h(ix)
+	pop	bc
+	call cpct_drawSprite_asm
+
+	cpctm_setBorder_asm HW_WHITE
+
+	_enemigo_counter = . + 1
+		ld	a, #0
+		dec	a
+		ret 	z
+
+		ld	(_enemigo_counter), a
+		ld	bc, #sizeof_enemigo
+		add	ix, bc
+		jr	_update_loop_enemigo
+
+
+
+
+
+
+
+
+
+
+
+
 sys_eren_clearScreen::
 	ld   a, #0xC0
 	ld   h, a

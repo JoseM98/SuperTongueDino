@@ -34,6 +34,10 @@ obst3: DefineCmp_Obstacle 60, 101,    20, 8, 0x0F
 obst4: DefineCmp_Obstacle  0, 150,   40, 8, 0x0F
 obst5: DefineCmp_Obstacle  40, 150,   40, 8, 0x0F
 obst6: DefineCmp_Obstacle  0, 40,    24, 8, 0x0F
+
+
+enemigo1: DefineCmp_Enemigo 70,  20, 0, 0, 4,  8, _hero_sp_0, enemigo_ia_noIA
+
 ;; //////////////////
 ;; Manager Game Init
 ;; Input: -
@@ -84,6 +88,11 @@ man_game_init::
 	;call man_entity_create
 	;ld hl, #ent4
 	;call man_entity_create
+
+	call man_enemigo_init
+
+	ld hl, #enemigo1
+	call man_enemigo_create
 
 
 	ret
@@ -150,6 +159,8 @@ man_game_render::
 	cpctm_setBorder_asm HW_RED
 	call man_entity_getArray
 	call sys_eren_update
+	call man_enemigo_getArray
+	call sys_eren_update_enemigo
 	cpctm_setBorder_asm HW_WHITE
 
 	ret

@@ -11,3 +11,8 @@
 .globl man_obstacle_init
 .globl man_obstacle_new
 .globl man_obstacle_create
+
+.globl man_enemigo_getArray
+.globl man_enemigo_init
+.globl man_enemigo_new
+.globl man_enemigo_create
